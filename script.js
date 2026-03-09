@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ideaInput = document.getElementById('ideaInput');
     const userSelect = document.getElementById('userSelect');
     const ideaList = document.getElementById('ideaList');
+    const countValue = document.getElementById('countValue');
+
+    // Function to update the counter
+    const updateCounter = () => {
+        const count = ideaList.querySelectorAll('.idea-card').length;
+        countValue.textContent = count;
+    };
 
     // Function to add a new idea
     const createIdea = () => {
@@ -31,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add to list
         ideaList.prepend(li);
+        updateCounter();
 
         // Clear inputs
         ideaInput.value = '';
@@ -51,7 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = e.target.closest('.idea-card');
             card.style.opacity = '0';
             card.style.transform = 'scale(0.9)';
-            setTimeout(() => card.remove(), 200);
+            setTimeout(() => {
+                card.remove();
+                updateCounter();
+            }, 200);
         }
     });
 });
