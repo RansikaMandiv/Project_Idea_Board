@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Idea Board</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <header class="board-header">
+            <h1>Group Idea Board</h1>
+        </header>
+
+        <section class="input-section">
+            <div class="input-group">
+                <select id="userSelect">
+                    <option value="" disabled selected>Select your name...</option>
+                    <option value="Nimal">Nimal</option>
+                    <option value="Sara">Sara</option>
+                    <option value="Alex">Alex</option>
+                    <option value="Priya">Priya</option>
+                </select>
+                
+                <input type="text" id="ideaInput" placeholder="Enter your brilliant idea here..." maxlength="100">
+                
+                <button id="addBtn">Add Idea</button>
+            </div>
+        </section>
+
+        <main class="board-content">
+            <ul id="ideaList">
+                <li class="idea-card">
+                    <div class="idea-text">Build a study planner</div>
+                    <div class="idea-meta">suggested by <span>Nimal</span></div>
+                    <button class="delete-btn">&times;</button>
+                </li>
+            </ul>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

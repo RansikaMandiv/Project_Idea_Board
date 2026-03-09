@@ -1,0 +1,148 @@
+:root {
+    --primary-blue: #2563eb;
+    --hover-blue: #1d4ed8;
+    --bg-gray: #f8fafc;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: var(--bg-gray);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.board-header {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    padding: 24px;
+    text-align: center;
+}
+
+.board-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.input-section {
+    padding: 24px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 12px;
+}
+
+select, input {
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+select:focus, input:focus {
+    border-color: var(--primary-blue);
+}
+
+button#addBtn {
+    padding: 12px 24px;
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button#addBtn:hover {
+    background-color: var(--hover-blue);
+}
+
+.board-content {
+    padding: 24px;
+    min-height: 200px;
+}
+
+#ideaList {
+    list-style: none;
+}
+
+.idea-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.idea-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.idea-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.idea-meta {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.idea-meta span {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.delete-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    color: #ef4444;
+}
+
+/* Responsive Tweak */
+@media (max-width: 600px) {
+    .input-group {
+        grid-template-columns: 1fr;
+    }
+}
