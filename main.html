@@ -10,11 +10,16 @@
 
     <nav class="navbar">
         <div class="navbar-brand">IdeaBoard</div>
-        <ul class="navbar-menu">
-            <li><a href="#" id="gpa-calc-link">GPA Calculator</a></li>
-            <li><a href="#" id="study-timer-link">Study Timer</a></li>
-            <li><a href="index.html">Idea Board</a></li>
-        </ul>
+        <div class="nav-right">
+            <ul class="navbar-menu">
+                <li><a href="#" id="idea-board-link">Idea Board</a></li>
+                <li><a href="#" id="gpa-calc-link">GPA Calculator</a></li>
+                <li><a href="#" id="study-timer-link">Study Timer</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle">
+                <span class="mode-text">Dark Mode</span>
+            </button>
+        </div>
     </nav>
 
     <div class="main-container">
@@ -46,6 +51,46 @@
                 </div>
             </div>
 
+            <!-- Idea Board View -->
+            <div id="idea-view" class="view-card" style="display: none;">
+                <header class="board-header">
+                    <h1>Group Idea Board</h1>
+                    <div class="idea-counter">Total Ideas: <span id="countValue">1</span></div>
+                </header>
+
+                <section class="input-section">
+                    <div class="input-group">
+                        <select id="userSelect">
+                            <option value="" disabled selected>Select your name...</option>
+                            <option value="Thishara">Thishara</option>
+                            <option value="Sadeka">Sadeka</option>
+                            <option value="Eshan">Eshan</option>
+                            <option value="Lahiru">Lahiru</option>
+                            <option value="Vishwa">Vishwa</option>
+                            <option value="Ransika">Ransika</option>
+                            <option value="Puvi">Puvi</option>
+                            <option value="Tharun">Tharun</option>
+                            <option value="Aloka">Aloka</option>
+                            <option value="Manodya">Manodya</option>
+                        </select>
+                        
+                        <input type="text" id="ideaInput" placeholder="Enter your brilliant idea here..." maxlength="100">
+                        
+                        <button id="addBtn" class="btn btn-primary">Add Idea</button>
+                    </div>
+                </section>
+
+                <div class="board-content">
+                    <ul id="ideaList" style="list-style: none; padding: 0;">
+                        <li class="idea-card">
+                            <div class="idea-text">Build a study planner</div>
+                            <div class="idea-meta">suggested by <span>Thishara</span></div>
+                            <button class="delete-btn">&times;</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <!-- GPA Calculator View -->
             <div id="gpa-view" class="view-card" style="display: none;">
                 <h1>GPA Calculator</h1>
@@ -70,6 +115,7 @@
                 <div class="gpa-controls">
                     <button id="add-course-btn" class="btn btn-outline">Add Course</button>
                     <button id="calculate-gpa-btn" class="btn btn-primary">Calculate GPA</button>
+                    <button id="reset-gpa-btn" class="btn btn-outline">Reset</button>
                 </div>
 
                 <div id="gpa-result-container" style="display: none;">

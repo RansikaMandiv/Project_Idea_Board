@@ -8,12 +8,25 @@
     --border-color: #dddddd;
     --success-color: #27ae60;
     --danger-color: #e74c3c;
+    --nav-bg: var(--secondary-color);
+}
+
+body.dark-mode {
+    --bg-light: #121212;
+    --white: #1e1e1e;
+    --text-main: #f0f0f0;
+    --text-light: #aaaaaa;
+    --border-color: #444444;
+    --secondary-color: #3498db; /* Use primary blue for headings in dark mode */
+    --nav-bg: #000000;
+    --card-hover: #252525;
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
 body {
@@ -26,8 +39,8 @@ body {
 
 /* Navbar Styles */
 .navbar {
-    background-color: var(--secondary-color);
-    color: var(--white);
+    background-color: var(--nav-bg);
+    color: #ffffff; /* Always white on dark nav */
     padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
@@ -35,9 +48,36 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggle {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #ffffff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+}
+
+.theme-toggle:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+}
+
 .navbar-brand {
     font-size: 1.4rem;
     font-weight: bold;
+    color: #ffffff;
 }
 
 .navbar-menu {
@@ -47,7 +87,7 @@ body {
 }
 
 .navbar-menu li a {
-    color: var(--white);
+    color: #ffffff;
     text-decoration: none;
     font-size: 0.95rem;
     transition: opacity 0.2s;
@@ -90,8 +130,9 @@ body {
 
 .event-item {
     padding: 0.6rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--border-color);
     font-size: 0.9rem;
+    color: var(--text-main);
 }
 
 /* Content Area */
@@ -166,6 +207,8 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 0.9rem;
+    background-color: var(--bg-light);
+    color: var(--text-main);
 }
 
 .course-row input.course-grade {
@@ -193,10 +236,15 @@ body {
 
 #gpa-result-container {
     margin-top: 2rem;
-    padding: 1rem;
-    background-color: #e8f4fd;
+    padding: 1.5rem;
+    background-color: var(--bg-light);
     border-left: 4px solid var(--primary-color);
     text-align: center;
+    border-radius: 4px;
+}
+
+#gpa-result-container h3 {
+    color: var(--text-main);
 }
 
 /* Buttons */
@@ -206,7 +254,11 @@ body {
     border: none;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.98);
 }
 
 .btn-primary {
@@ -225,7 +277,7 @@ body {
 }
 
 .btn-outline:hover {
-    background-color: #eeeeee;
+    background-color: var(--bg-light);
 }
 
 /* Timer View */
@@ -238,10 +290,12 @@ body {
     font-weight: bold;
     margin: 1.5rem 0;
     font-family: monospace;
+    color: var(--primary-color);
 }
 
 .manual-time-input {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-light);
 }
 
 .slider {
@@ -249,22 +303,13 @@ body {
     max-width: 300px;
 }
 
-/* Idea Board (index.html) Basic Style */
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    background: var(--white);
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
+/* Idea Board Basic Style */
 .board-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    border-bottom: 2px solid var(--bg-light);
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 1rem;
 }
 
@@ -274,6 +319,7 @@ body {
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
+    font-weight: bold;
 }
 
 .input-group {
@@ -284,24 +330,53 @@ body {
 }
 
 .input-group select, .input-group input {
-    padding: 10px;
+    padding: 10px 15px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    font-size: 0.95rem;
+    outline: none;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+}
+
+.input-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233498db'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    padding-right: 40px;
+    cursor: pointer;
 }
 
 .idea-card {
-    background: #fafafa;
-    border: 1px solid #eeeeee;
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
     padding: 1.2rem;
+    padding-right: 60px;
     margin-bottom: 1rem;
     border-radius: 6px;
     position: relative;
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80px;
+}
+
+.idea-card:hover {
+    background: var(--card-hover, #fdfdfd);
+}
+
+body.dark-mode .idea-card:hover {
+    background: #252525;
 }
 
 .idea-text {
     font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: var(--text-main);
 }
 
 .idea-meta {
@@ -311,11 +386,25 @@ body {
 
 .delete-btn {
     position: absolute;
-    top: 10px;
+    top: 50%;
     right: 15px;
+    transform: translateY(-50%);
     background: none;
-    border: none;
+    border: 1px solid rgba(231, 76, 60, 0.2);
     color: var(--danger-color);
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background 0.2s, border-color 0.2s;
+    line-height: 1;
+}
+
+.delete-btn:hover {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: var(--danger-color);
 }

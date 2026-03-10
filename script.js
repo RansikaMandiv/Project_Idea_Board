@@ -1,12 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Theme Logic ---
+    const themeToggle = document.getElementById('theme-toggle');
+    const modeText = themeToggle ? themeToggle.querySelector('.mode-text') : null;
+    const body = document.body;
+
+    // Check for saved theme
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme === 'dark') {
+        body.classList.add('dark-mode');
+        if (modeText) modeText.textContent = 'Light Mode';
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            if (modeText) modeText.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+        });
+    }
+
     // --- Navigation Logic ---
+    const ideaLink = document.getElementById('idea-board-link');
     const gpaLink = document.getElementById('gpa-calc-link');
     const timerLink = document.getElementById('study-timer-link');
+    
     const dashboardView = document.getElementById('dashboard-view');
+    const ideaView = document.getElementById('idea-view');
     const gpaView = document.getElementById('gpa-view');
     const timerView = document.getElementById('timer-view');
 
-    const views = [dashboardView, gpaView, timerView];
+    const views = [dashboardView, ideaView, gpaView, timerView];
 
     const showView = (targetView) => {
         views.forEach(view => {
@@ -14,6 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (targetView) targetView.style.display = 'block';
     };
+
+    if (ideaLink) {
+        ideaLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(ideaView);
+        });
+    }
 
     if (gpaLink) {
         gpaLink.addEventListener('click', (e) => {
@@ -33,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const courseList = document.getElementById('course-list');
     const addCourseBtn = document.getElementById('add-course-btn');
     const calculateGpaBtn = document.getElementById('calculate-gpa-btn');
+    const resetGpaBtn = document.getElementById('reset-gpa-btn');
     const gpaResultContainer = document.getElementById('gpa-result-container');
     const finalGpaSpan = document.getElementById('final-gpa');
     const displayGpaStat = document.getElementById('display-gpa-stat');
@@ -119,6 +151,30 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 alert('Please enter valid credits and grades for at least one course.');
             }
+        });
+    }
+
+    if (resetGpaBtn) {
+        resetGpaBtn.addEventListener('click', () => {
+            // Remove all rows except the header
+            const rows = courseList.querySelectorAll('.course-row:not(.header)');
+            rows.forEach(row => row.remove());
+            
+            // Add one empty row back for convenience
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Course Name" class="course-name">
+                <input type="number" placeholder="Credits" class="course-credits" min="1" step="1">
+                <input type="text" placeholder="Grade (e.g. A)" class="course-grade" maxlength="2">
+                <button class="remove-course-btn">&times;</button>
+            `;
+            courseList.appendChild(row);
+
+            // Hide results
+            gpaResultContainer.style.display = 'none';
+            finalGpaSpan.textContent = '0.00';
+            if (displayGpaStat) displayGpaStat.textContent = '0.00';
         });
     }
 
