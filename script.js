@@ -1,68 +1,266 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Navigation Logic ---
+    const gpaLink = document.getElementById('gpa-calc-link');
+    const timerLink = document.getElementById('study-timer-link');
+    const dashboardView = document.getElementById('dashboard-view');
+    const gpaView = document.getElementById('gpa-view');
+    const timerView = document.getElementById('timer-view');
+
+    const views = [dashboardView, gpaView, timerView];
+
+    const showView = (targetView) => {
+        views.forEach(view => {
+            if (view) view.style.display = 'none';
+        });
+        if (targetView) targetView.style.display = 'block';
+    };
+
+    if (gpaLink) {
+        gpaLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(gpaView);
+        });
+    }
+
+    if (timerLink) {
+        timerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showView(timerView);
+        });
+    }
+
+    // --- GPA Calculator Logic ---
+    const courseList = document.getElementById('course-list');
+    const addCourseBtn = document.getElementById('add-course-btn');
+    const calculateGpaBtn = document.getElementById('calculate-gpa-btn');
+    const gpaResultContainer = document.getElementById('gpa-result-container');
+    const finalGpaSpan = document.getElementById('final-gpa');
+    const displayGpaStat = document.getElementById('display-gpa-stat');
+
+    const gradePoints = {
+        'A': 4.0, 'A-': 3.7,
+        'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+        'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+        'D+': 1.3, 'D': 1.0, 'F': 0.0
+    };
+
+    if (addCourseBtn) {
+        addCourseBtn.addEventListener('click', () => {
+            const row = document.createElement('div');
+            row.className = 'course-row';
+            row.innerHTML = `
+                <input type="text" placeholder="Course Name" class="course-name">
+                <input type="number" placeholder="Credits" class="course-credits" min="1" step="1">
+                <input type="text" placeholder="Grade (e.g. A)" class="course-grade" maxlength="2">
+                <button class="remove-course-btn">&times;</button>
+            `;
+            courseList.appendChild(row);
+        });
+    }
+
+    if (courseList) {
+        courseList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-course-btn')) {
+                e.target.closest('.course-row').remove();
+            }
+        });
+
+        // Ensure uppercase for grade input and integer for credits
+        courseList.addEventListener('input', (e) => {
+            if (e.target.classList.contains('course-grade')) {
+                e.target.value = e.target.value.toUpperCase();
+            }
+            if (e.target.classList.contains('course-credits')) {
+                e.target.value = Math.floor(e.target.value);
+            }
+        });
+    }
+
+    if (calculateGpaBtn) {
+        calculateGpaBtn.addEventListener('click', () => {
+            const rows = courseList.querySelectorAll('.course-row:not(.header)');
+            let totalPoints = 0;
+            let totalCredits = 0;
+            let hasError = false;
+
+            rows.forEach(row => {
+                const creditsInput = row.querySelector('.course-credits');
+                const gradeInput = row.querySelector('.course-grade');
+                
+                const credits = parseInt(creditsInput.value);
+                const gradeText = gradeInput.value.toUpperCase().trim();
+                const grade = gradePoints[gradeText];
+
+                if (isNaN(credits) || credits <= 0) {
+                    // Skip empty/invalid credits but mark as potential error if grade exists
+                    if (gradeText) hasError = true;
+                    return;
+                }
+
+                if (grade === undefined) {
+                    if (gradeText) {
+                        alert(`Invalid grade: ${gradeText}. Please use A, B, C, D, F (with +/- if applicable).`);
+                        hasError = true;
+                    }
+                    return;
+                }
+
+                totalPoints += (grade * credits);
+                totalCredits += credits;
+            });
+
+            if (hasError) return;
+
+            if (totalCredits > 0) {
+                const gpa = (totalPoints / totalCredits).toFixed(2);
+                finalGpaSpan.textContent = gpa;
+                if (displayGpaStat) displayGpaStat.textContent = gpa;
+                gpaResultContainer.style.display = 'block';
+            } else {
+                alert('Please enter valid credits and grades for at least one course.');
+            }
+        });
+    }
+
+    // --- Study Timer Logic ---
+    const timerDisplay = document.getElementById('timer-display');
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const alarmSound = document.getElementById('alarm-sound');
+    const manualMinutes = document.getElementById('manual-minutes');
+    const minutesVal = document.getElementById('minutes-val');
+
+    if (timerDisplay) {
+        let initialMinutes = 25;
+        let timeLeft = initialMinutes * 60;
+        let timerInterval = null;
+
+        const updateDisplay = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        };
+
+        if (manualMinutes) {
+            manualMinutes.addEventListener('input', (e) => {
+                if (timerInterval) return;
+                initialMinutes = parseInt(e.target.value);
+                minutesVal.textContent = initialMinutes;
+                timeLeft = initialMinutes * 60;
+                updateDisplay();
+            });
+        }
+
+        const startTimer = () => {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                startBtn.textContent = 'Start';
+                manualMinutes.disabled = false;
+                return;
+            }
+
+            startBtn.textContent = 'Pause';
+            manualMinutes.disabled = true;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    startBtn.textContent = 'Start';
+                    manualMinutes.disabled = false;
+                    
+                    if (alarmSound) alarmSound.play().catch(e => console.log('Audio playback failed:', e));
+                    
+                    timeLeft = initialMinutes * 60;
+                    updateDisplay();
+
+                    setTimeout(() => {
+                        alert('Time is up! Take a break.');
+                        if (alarmSound) {
+                            alarmSound.pause();
+                            alarmSound.currentTime = 0;
+                        }
+                    }, 500);
+                }
+            }, 1000);
+        };
+
+        const resetTimer = () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = initialMinutes * 60;
+            updateDisplay();
+            startBtn.textContent = 'Start';
+            manualMinutes.disabled = false;
+            if (alarmSound) {
+                alarmSound.pause();
+                alarmSound.currentTime = 0;
+            }
+        };
+
+        if (startBtn) startBtn.addEventListener('click', startTimer);
+        if (resetBtn) resetBtn.addEventListener('click', resetTimer);
+    }
+
+    // --- Idea Board Logic (index.html) ---
     const addBtn = document.getElementById('addBtn');
     const ideaInput = document.getElementById('ideaInput');
     const userSelect = document.getElementById('userSelect');
     const ideaList = document.getElementById('ideaList');
     const countValue = document.getElementById('countValue');
 
-    // Function to update the counter
-    const updateCounter = () => {
-        const count = ideaList.querySelectorAll('.idea-card').length;
-        countValue.textContent = count;
-    };
+    if (addBtn && ideaList) {
+        const updateCounter = () => {
+            const count = ideaList.querySelectorAll('.idea-card').length;
+            countValue.textContent = count;
+        };
 
-    // Function to add a new idea
-    const createIdea = () => {
-        const ideaText = ideaInput.value.trim();
-        const userName = userSelect.value;
+        const createIdea = () => {
+            const ideaText = ideaInput.value.trim();
+            const userName = userSelect.value;
 
-        // Validation
-        if (!userName) {
-            alert('Please select a name first!');
-            return;
-        }
-        if (!ideaText) {
-            alert('Please enter an idea!');
-            return;
-        }
+            if (!userName) {
+                alert('Please select a name first!');
+                return;
+            }
+            if (!ideaText) {
+                alert('Please enter an idea!');
+                return;
+            }
 
-        // Create elements
-        const li = document.createElement('li');
-        li.className = 'idea-card';
-        
-        li.innerHTML = `
-            <div class="idea-text">${ideaText}</div>
-            <div class="idea-meta">suggested by <span>${userName}</span></div>
-            <button class="delete-btn" title="Remove Idea">&times;</button>
-        `;
+            const li = document.createElement('li');
+            li.className = 'idea-card';
+            li.innerHTML = `
+                <div class="idea-text">${ideaText}</div>
+                <div class="idea-meta">suggested by <span>${userName}</span></div>
+                <button class="delete-btn" title="Remove Idea">&times;</button>
+            `;
 
-        // Add to list
-        ideaList.prepend(li);
-        updateCounter();
+            ideaList.prepend(li);
+            updateCounter();
+            ideaInput.value = '';
+            userSelect.selectedIndex = 0;
+        };
 
-        // Clear inputs
-        ideaInput.value = '';
-        userSelect.selectedIndex = 0;
-    };
+        addBtn.addEventListener('click', createIdea);
 
-    // Event Listeners
-    addBtn.addEventListener('click', createIdea);
+        ideaInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') createIdea();
+        });
 
-    // Allow "Enter" key to submit
-    ideaInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') createIdea();
-    });
-
-    // Event Delegation for delete buttons
-    ideaList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-btn')) {
-            const card = e.target.closest('.idea-card');
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                card.remove();
-                updateCounter();
-            }, 200);
-        }
-    });
+        ideaList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                const card = e.target.closest('.idea-card');
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    card.remove();
+                    updateCounter();
+                }, 200);
+            }
+        });
+    }
 });

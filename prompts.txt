@@ -1,1 +1,9 @@
 We need to create a student toolkit website. Ude HTML, CSS and javaScript. The page must include a Navigation bar and a Sidebar. The navigation bar should include the menu items, GPA Calculator and Study timer. The sidebar should display a section titled "upcoming events". Organize the layout by using CSS classes. Design should clearly include navbar and sidebar.
+
+
+
+
+#GPA Calculator
+Make the gpa calculater button functional by updating main.html , script.js and style.css , the user should be able to type the course credits, type grades after clicking the Calculate button the system should process and display overall GPA 
+
+in gpa calculater remove the dropdown menu and make the grade input should be get as text and user can only use upper case letters if user entered a lower case letter change it into uppercase and credit input must be an integer
