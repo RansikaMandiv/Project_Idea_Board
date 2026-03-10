@@ -1,0 +1,1 @@
+We need to create a student toolkit website. Ude HTML, CSS and javaScript. The page must include a Navigation bar and a Sidebar. The navigation bar should include the menu items, GPA Calculator and Study timer. The sidebar should display a section titled "upcoming events". Organize the layout by using CSS classes. Design should clearly include navbar and sidebar.
