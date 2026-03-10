@@ -34,9 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showView = (targetView) => {
         views.forEach(view => {
-            if (view) view.style.display = 'none';
+            if (view) {
+                view.style.display = 'none';
+                view.style.animation = 'none'; // Reset animation
+            }
         });
-        if (targetView) targetView.style.display = 'block';
+        if (targetView) {
+            targetView.style.display = 'block';
+            // Force reflow to restart animation
+            void targetView.offsetWidth;
+            targetView.style.animation = 'fadeIn 0.5s ease-out forwards';
+        }
     };
 
     if (ideaLink) {
