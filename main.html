@@ -280,8 +280,20 @@
                         timerInterval = null;
                         startBtn.textContent = 'Start';
                         manualMinutes.disabled = false;
+                        
+                        // Play alarm sound
                         alarmSound.play().catch(e => console.log('Audio playback failed:', e));
-                        alert('Time is up! Take a break.');
+                        
+                        // Automatic reset
+                        timeLeft = initialMinutes * 60;
+                        updateDisplay();
+
+                        // Alert user after a short delay to allow UI/sound to trigger
+                        setTimeout(() => {
+                            alert('Time is up! Take a break.');
+                            alarmSound.pause();
+                            alarmSound.currentTime = 0;
+                        }, 500);
                     }
                 }, 1000);
             };
