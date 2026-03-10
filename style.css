@@ -1,25 +1,27 @@
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --bg-light: #f4f7f6;
+    --primary-color: #800000; /* Maroon */
+    --secondary-color: #4D0000; /* Dark Maroon */
+    --gold: #FFD700;
+    --gold-dark: #DAA520;
+    --bg-light: #fffcf5; /* Creamy white */
     --white: #ffffff;
-    --text-main: #333333;
-    --text-light: #666666;
-    --border-color: #dddddd;
+    --text-main: #331a1a;
+    --text-light: #664d4d;
+    --border-color: #e6ccb2;
     --success-color: #27ae60;
     --danger-color: #e74c3c;
-    --nav-bg: var(--secondary-color);
+    --nav-bg: var(--primary-color);
 }
 
 body.dark-mode {
-    --bg-light: #121212;
-    --white: #1e1e1e;
-    --text-main: #f0f0f0;
-    --text-light: #aaaaaa;
-    --border-color: #444444;
-    --secondary-color: #3498db; /* Use primary blue for headings in dark mode */
+    --bg-light: #1a0000;
+    --white: #2d0000;
+    --text-main: #ffedcc;
+    --text-light: #d4a373;
+    --border-color: #5c0000;
+    --secondary-color: var(--gold);
     --nav-bg: #000000;
-    --card-hover: #252525;
+    --card-hover: #3d0000;
 }
 
 * {
@@ -40,12 +42,30 @@ body {
 /* Navbar Styles */
 .navbar {
     background-color: var(--nav-bg);
-    color: #ffffff; /* Always white on dark nav */
+    color: var(--gold);
     padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    border-bottom: 2px solid var(--gold);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    object-fit: cover;
 }
 
 .nav-right {
@@ -57,8 +77,8 @@ body {
 /* Dark Mode Toggle Button */
 .theme-toggle {
     background: none;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: #ffffff;
+    border: 1px solid var(--gold);
+    color: var(--gold);
     padding: 5px 15px;
     border-radius: 20px;
     cursor: pointer;
@@ -70,14 +90,8 @@ body {
 }
 
 .theme-toggle:hover {
-    background: rgba(255,255,255,0.1);
-    border-color: white;
-}
-
-.navbar-brand {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #ffffff;
+    background: rgba(255, 215, 0, 0.1);
+    box-shadow: 0 0 10px var(--gold);
 }
 
 .navbar-menu {
@@ -90,11 +104,11 @@ body {
     color: #ffffff;
     text-decoration: none;
     font-size: 0.95rem;
-    transition: opacity 0.2s;
+    transition: color 0.2s;
 }
 
 .navbar-menu li a:hover {
-    opacity: 0.8;
+    color: var(--gold);
 }
 
 /* Main Content Layout */
@@ -116,12 +130,16 @@ body {
 
 .sidebar-section h3 {
     font-size: 0.9rem;
-    color: var(--text-light);
+    color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--gold);
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
+}
+
+body.dark-mode .sidebar-section h3 {
+    color: var(--gold);
 }
 
 .event-list {
@@ -129,10 +147,44 @@ body {
 }
 
 .event-item {
-    padding: 0.6rem 0;
+    padding: 0.8rem 1rem;
     border-bottom: 1px solid var(--border-color);
     font-size: 0.9rem;
     color: var(--text-main);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.event-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 70%;
+    background-color: var(--gold);
+    transition: width 0.3s ease;
+    border-radius: 0 4px 4px 0;
+}
+
+.event-item:hover {
+    background-color: var(--primary-color);
+    transform: translateX(8px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2);
+    color: var(--gold);
+    padding-left: 1.5rem;
+}
+
+.event-item:hover::before {
+    width: 5px;
+}
+
+body.dark-mode .event-item:hover {
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
 }
 
 /* Content Area */
@@ -166,7 +218,11 @@ body {
 .view-card h1 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-    color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+body.dark-mode .view-card h1 {
+    color: var(--gold);
 }
 
 /* Dashboard Stats */
@@ -195,6 +251,10 @@ body {
     font-size: 1.8rem;
     color: var(--primary-color);
     font-weight: bold;
+}
+
+body.dark-mode .stat-card div {
+    color: var(--gold);
 }
 
 /* GPA Calculator Table-like UI */
@@ -229,7 +289,7 @@ body {
 
 .course-row input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--gold);
 }
 
 .remove-course-btn {
@@ -250,7 +310,7 @@ body {
     margin-top: 2rem;
     padding: 1.5rem;
     background-color: var(--bg-light);
-    border-left: 4px solid var(--primary-color);
+    border-left: 4px solid var(--gold);
     text-align: center;
     border-radius: 4px;
 }
@@ -275,11 +335,13 @@ body {
 
 .btn-primary {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--gold);
+    border: 1px solid var(--gold);
 }
 
 .btn-primary:hover {
-    background-color: #2980b9;
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 10px var(--gold);
 }
 
 .btn-outline {
@@ -303,6 +365,12 @@ body {
     margin: 1.5rem 0;
     font-family: monospace;
     color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(128,0,0,0.1);
+}
+
+body.dark-mode .timer-display {
+    color: var(--gold);
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 }
 
 .manual-time-input {
@@ -327,7 +395,8 @@ body {
 
 .idea-counter {
     background: var(--primary-color);
-    color: white;
+    color: var(--gold);
+    border: 1px solid var(--gold);
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.85rem;
@@ -353,7 +422,7 @@ body {
 
 .input-group select {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%233498db'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23DAA520'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     background-size: 18px;
@@ -381,7 +450,7 @@ body {
 }
 
 body.dark-mode .idea-card:hover {
-    background: #252525;
+    background: #3d0000;
 }
 
 .idea-text {

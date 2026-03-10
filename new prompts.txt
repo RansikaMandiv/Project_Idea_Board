@@ -1,0 +1,14 @@
+1. create the study timer which is linked to study timer button in the navigation bar of the main.html the study timer must contains a 25minute timer count and there must be a start and reset button to the timer and after the timer goes off an alarm sound should be run to alert the user
+2. add a section to the study timer so user can enter a manual time to set study alarm and it should contain minutes bar
+3. when timer hits zero an alarm sound shoul be played via speakers and also timer must be resets automatically
+4. refer index.html and make the code for it inside main.html to open it normally like other navigation operations
+5. fix the drop down icon indentation in select your name and make the cross a bit larger and set it to middle in idea remove section in idea board
+6. gpa calculator isnt connected to the button chech it
+7. add a reset button to the gpa calculator to remove all insertions quickly
+8. add a dark mode toggle to the entire website to turn the website to darkmode
+9. every texts colors should be readable in darkmode toggle
+10. add smooth fadde in animtion so that section appear graddually when the page loads
+11. add interactive slide bar when the user hover over the items in the upcooming events side bar the items should glow, the item should expand slightly
+12. change the overall color theme to maroon and gold with their shades. include a placehodler image in the navigation bar nearleft idea board
+13. make the place holder image a circle place holder icon
+14. change the place holder as a user profile photo icon
