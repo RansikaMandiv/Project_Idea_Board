@@ -114,6 +114,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.target.value = Math.floor(e.target.value);
             }
         });
+
+        // Proactive duplicate course name check
+        courseList.addEventListener('change', (e) => {
+            if (e.target.classList.contains('course-name')) {
+                const currentInput = e.target;
+                const value = currentInput.value.trim().toLowerCase();
+                if (!value) return;
+
+                const otherInputs = Array.from(courseList.querySelectorAll('.course-name'))
+                    .filter(input => input !== currentInput);
+                
+                const isDuplicate = otherInputs.some(input => input.value.trim().toLowerCase() === value);
+
+                if (isDuplicate) {
+                    alert(`The course "${currentInput.value.trim()}" has already been added!`);
+                    currentInput.value = '';
+                    setTimeout(() => currentInput.focus(), 10);
+                }
+            }
+        });
     }
 
     if (calculateGpaBtn) {
@@ -122,14 +142,28 @@ document.addEventListener('DOMContentLoaded', () => {
             let totalPoints = 0;
             let totalCredits = 0;
             let hasError = false;
+            let hasDuplicate = false;
+            const courseNames = new Set();
 
             rows.forEach(row => {
+                const nameInput = row.querySelector('.course-name');
                 const creditsInput = row.querySelector('.course-credits');
                 const gradeInput = row.querySelector('.course-grade');
                 
+                const courseName = nameInput.value.trim().toLowerCase();
                 const credits = parseInt(creditsInput.value);
                 const gradeText = gradeInput.value.toUpperCase().trim();
                 const grade = gradePoints[gradeText];
+
+                if (courseName) {
+                    if (courseNames.has(courseName)) {
+                        hasDuplicate = true;
+                        nameInput.style.border = '1px solid #ff4d4d';
+                    } else {
+                        courseNames.add(courseName);
+                        nameInput.style.border = '';
+                    }
+                }
 
                 if (isNaN(credits) || credits <= 0) {
                     // Skip empty/invalid credits but mark as potential error if grade exists
@@ -148,6 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 totalPoints += (grade * credits);
                 totalCredits += credits;
             });
+
+            if (hasDuplicate) {
+                alert('Duplicate course name found! Please ensure each course has a unique name.');
+                return;
+            }
 
             if (hasError) return;
 
@@ -282,6 +321,33 @@ document.addEventListener('DOMContentLoaded', () => {
             countValue.textContent = count;
         };
 
+        const saveIdeas = () => {
+            const ideas = Array.from(ideaList.querySelectorAll('.idea-card')).map(card => ({
+                text: card.querySelector('.idea-text').textContent,
+                user: card.querySelector('.idea-meta span').textContent
+            }));
+            localStorage.setItem('ideaBoardData', JSON.stringify(ideas));
+        };
+
+        const loadIdeas = () => {
+            const savedData = localStorage.getItem('ideaBoardData');
+            if (savedData) {
+                const ideas = JSON.parse(savedData);
+                ideaList.innerHTML = ''; // Clear default hardcoded ideas
+                ideas.reverse().forEach(idea => {
+                    const li = document.createElement('li');
+                    li.className = 'idea-card';
+                    li.innerHTML = `
+                        <div class="idea-text">${idea.text}</div>
+                        <div class="idea-meta">suggested by <span>${idea.user}</span></div>
+                        <button class="delete-btn" title="Remove Idea">&times;</button>
+                    `;
+                    ideaList.prepend(li);
+                });
+                updateCounter();
+            }
+        };
+
         const createIdea = () => {
             const ideaText = ideaInput.value.trim();
             const userName = userSelect.value;
@@ -295,6 +361,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Check for duplicate ideas
+            const existingIdeas = Array.from(ideaList.querySelectorAll('.idea-text'))
+                .map(el => el.textContent.trim().toLowerCase());
+            
+            if (existingIdeas.includes(ideaText.toLowerCase())) {
+                alert('This idea has already been added to the board!');
+                return;
+            }
+
             const li = document.createElement('li');
             li.className = 'idea-card';
             li.innerHTML = `
@@ -305,9 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ideaList.prepend(li);
             updateCounter();
+            saveIdeas();
             ideaInput.value = '';
             userSelect.selectedIndex = 0;
         };
+
+        loadIdeas();
 
         addBtn.addEventListener('click', createIdea);
 
@@ -323,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     card.remove();
                     updateCounter();
+                    saveIdeas();
                 }, 200);
             }
         });
