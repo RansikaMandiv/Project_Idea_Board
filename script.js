@@ -321,6 +321,33 @@ document.addEventListener('DOMContentLoaded', () => {
             countValue.textContent = count;
         };
 
+        const saveIdeas = () => {
+            const ideas = Array.from(ideaList.querySelectorAll('.idea-card')).map(card => ({
+                text: card.querySelector('.idea-text').textContent,
+                user: card.querySelector('.idea-meta span').textContent
+            }));
+            localStorage.setItem('ideaBoardData', JSON.stringify(ideas));
+        };
+
+        const loadIdeas = () => {
+            const savedData = localStorage.getItem('ideaBoardData');
+            if (savedData) {
+                const ideas = JSON.parse(savedData);
+                ideaList.innerHTML = ''; // Clear default hardcoded ideas
+                ideas.reverse().forEach(idea => {
+                    const li = document.createElement('li');
+                    li.className = 'idea-card';
+                    li.innerHTML = `
+                        <div class="idea-text">${idea.text}</div>
+                        <div class="idea-meta">suggested by <span>${idea.user}</span></div>
+                        <button class="delete-btn" title="Remove Idea">&times;</button>
+                    `;
+                    ideaList.prepend(li);
+                });
+                updateCounter();
+            }
+        };
+
         const createIdea = () => {
             const ideaText = ideaInput.value.trim();
             const userName = userSelect.value;
@@ -353,9 +380,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ideaList.prepend(li);
             updateCounter();
+            saveIdeas();
             ideaInput.value = '';
             userSelect.selectedIndex = 0;
         };
+
+        loadIdeas();
 
         addBtn.addEventListener('click', createIdea);
 
@@ -371,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     card.remove();
                     updateCounter();
+                    saveIdeas();
                 }, 200);
             }
         });
