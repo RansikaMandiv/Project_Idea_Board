@@ -1,14 +1,11 @@
-1. create the study timer which is linked to study timer button in the navigation bar of the main.html the study timer must contains a 25minute timer count and there must be a start and reset button to the timer and after the timer goes off an alarm sound should be run to alert the user
-2. add a section to the study timer so user can enter a manual time to set study alarm and it should contain minutes bar
-3. when timer hits zero an alarm sound shoul be played via speakers and also timer must be resets automatically
-4. refer index.html and make the code for it inside main.html to open it normally like other navigation operations
-5. fix the drop down icon indentation in select your name and make the cross a bit larger and set it to middle in idea remove section in idea board
-6. gpa calculator isnt connected to the button chech it
-7. add a reset button to the gpa calculator to remove all insertions quickly
-8. add a dark mode toggle to the entire website to turn the website to darkmode
-9. every texts colors should be readable in darkmode toggle
-10. add smooth fadde in animtion so that section appear graddually when the page loads
-11. add interactive slide bar when the user hover over the items in the upcooming events side bar the items should glow, the item should expand slightly
-12. change the overall color theme to maroon and gold with their shades. include a placehodler image in the navigation bar nearleft idea board
-13. make the place holder image a circle place holder icon
-14. change the place holder as a user profile photo icon
+1. when a user adds a idea it shouldnt be a copy or a duplicate of a current idea and also when a user adds a course to gpa calculator it shouldnt be a copy of a course which added already
+2. still the gpa calculator accepts the same courses it shouldnt give access to repeat the same course
+3. when the page gets refreshed or reloaded the ideas should remain without vanishing so ideas should remain
+4. now ideas are getting stored but the gpa calculator allows the duplicate courses
+5. the whole website must be responsive when access via different devices screen sizes like mobile,tablets,desktops
+6. the diplay of website in mobile and tablet is not correctly aligned and displayed
+7. enter your brilliant idea box is not aligned and refine the ui according to ui/ux principles to match device demensions
+8. gpa calculator wont accept grades like A+ and A- and other grades as well also when buttons glow the text inside the buttons cant see
+9. when we hover over the buttons the text inside them should be visible
+10. when we hover over the glow buttons the text inside them should be visible
+11. when we hover over the buttons the color of the text should be black and only the main buttons should be affected by this
