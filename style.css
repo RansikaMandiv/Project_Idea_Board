@@ -520,8 +520,9 @@ body.dark-mode .stat-card div {
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary-color);
-    box-shadow: 0 0 10px var(--gold);
+    background-color: var(--gold);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    color: #000000 !important; /* Text becomes black on hover */
 }
 
 .btn-outline {
@@ -531,7 +532,15 @@ body.dark-mode .stat-card div {
 }
 
 .btn-outline:hover {
-    background-color: var(--bg-light);
+    background-color: var(--primary-color);
+    color: var(--gold) !important;
+    border-color: var(--gold);
+}
+
+body.dark-mode .btn-outline:hover {
+    background-color: var(--gold);
+    color: var(--bg-light) !important;
+    border-color: var(--gold);
 }
 
 /* Timer View */
